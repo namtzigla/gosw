@@ -8,7 +8,7 @@ script:
   - go build 
   - ./gosw --config ./settings.example.json show
   - ./gosw --config ./settings.example.json load section1 test1
-  - gox -osarch="darwin_amd64 linux_386 linux_amd64"
+  - gox -osarch="darwin/amd64 linux/386 linux/amd64"
 deploy:
   provider: releases
   api_key:
