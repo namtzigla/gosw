@@ -1,0 +1,10 @@
+language: go
+go:
+  - 1.6
+deploy:
+  provider: releases
+  api_key:
+    secure: NumHu6yuCdA8Ki3RyCyaXtsLXgv26aEj9yshNdI4KaiL+QjDlBIR8UOVrT6xRfr2IAaH/Ilsk5Crjp3Mn+rtnZzt6KwE8BHQpUS2tyhpMxk133On0fEMI+peb/Twyv1qLsfavaNUY+CJxa+EvKDfjxNNEutjUI10OPu3x9NBTW2/Anpf/apZAGqEF97Dnh0LrAK1TRjk7Mebf+fNPb27lorJtc/pfCbI4mQyTnY5HqvBI5Pw0ulzR5hXock8Rf1L7SaX0LBKV8UGDhp3aLB7HmeQYB5rSiziagruPLdtEZTW5pE+WWCe/SHAeiOmtfBripD//RMpgXgNdMNO5b5H/b6nREVkX6nNIiDAPs1bNjk+PWKurq/5kwUWnenvwHynEzLcupDBmPxDwCJhV2K2R4F4NqLSg/CieiwJdVhAeZ/fR4LIEx7fp78Mw7r/9SmCKV/IakzTvprMJCFFCpAj/tb2j4S/BJcBkc1FqA1T8tmo+abuYzQe5eJXtebz/8Vfis3efp+SbAtP9A+/LCBKUZeO3OpX8IgMQ2asi18S3ogkkrgDlEMzDv5DqYuatuTpWelZsKD1AnJUhVDUyhiHkBaPV/VvfJPKaYb/JuENCgSnsBz0JHqhgmiwDwX1rYQMaKV4tp3Nytn+55AQVL125796tPwZxSiBIMvZouD3Ra4=
+  file: 'gosw'
+  on:
+    repo: namtzigla/gosw
