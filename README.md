@@ -16,8 +16,8 @@ For example for if you are working on two AWS regions you need to create a confi
 		},
 		"syd": {
 			"AWS_ACCESS_KEY_ID": "YYYYYYYYYYYYYY",
-            		"AWS_SECRET_ACCESS_KEY": "ZZZZZZZZZZZZZZZZZZZ",
-            		"AWS_REGION": "ap-southeast-2"	
+			"AWS_SECRET_ACCESS_KEY": "ZZZZZZZZZZZZZZZZZZZ",
+			"AWS_REGION": "ap-southeast-2"	
 		}
 }
 ```
@@ -47,9 +47,9 @@ In cases where you need to run an external script/command to switch your setting
 		"_command":"docker-machine env default"
         },
         "remote": {
-            "DOCKER_HOST": "tcp://1.1.1.2:2376",
-            "DOCKER_CERT_PATH": "/Users/xxx/.sdc/docker/xxx",
-            "DOCKER_TLS_VERIFY":1
+		"DOCKER_HOST": "tcp://1.1.1.2:2376",
+		"DOCKER_CERT_PATH": "/Users/xxx/.sdc/docker/xxx",
+		"DOCKER_TLS_VERIFY":1
         }
     }
 }
