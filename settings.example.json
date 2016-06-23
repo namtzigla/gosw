@@ -1,0 +1,12 @@
+{
+	"section1": {
+		"_default":"test1",
+		"test1": {
+			"ENV1":"env1",
+			"ENV2":"env2",
+			"_command":"command 1"
+		}
+	},
+	"section2": {
+	}
+}
