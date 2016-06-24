@@ -96,7 +96,7 @@ func generateScript(conf map[string]interface{}, section string, zoneName string
 	fmt.Printf("set -gx %s_name \"%s\";\n", section, zoneName)
 	if z, ok := conf[section]; ok {
 		zone := z.(map[string]interface{})
-		for k, v := range zone {
+		for k, v := range zone[zoneName].(map[string]interface{}) {
 			if k == "_command" {
 				fmt.Printf("eval (%s);\n", v)
 			} else {
