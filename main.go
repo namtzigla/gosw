@@ -100,7 +100,7 @@ func generateScript(conf map[string]interface{}, section string, zoneName string
 			if k == "_command" {
 				fmt.Printf("eval (%s);\n", v)
 			} else {
-				fmt.Printf("set -gx %s \"%s\";\n", k, v)
+				fmt.Printf("set -gx %s \"%v\";\n", k, v)
 			}
 		}
 	}
