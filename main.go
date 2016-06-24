@@ -124,10 +124,16 @@ func main() {
 							}
 
 						}
-						zoneName := c.Args().Get(1)
+						var zoneName = c.Args().Get(1)
+						if zoneName == "" {
+							s := section.(map[string]interface{})
+							zoneName = s["_default"].(string)
+						}
 						if zone, ok := section.(map[string]interface{})[zoneName]; ok {
 							for _, i := range varNames {
-								fmt.Printf("set -ex %s;\n", i)
+								if i != "_command" {
+									fmt.Printf("set -ex %s;\n", i)
+								}
 							}
 							fmt.Printf("set -gx %s_name \"%s\";\n", c.Args().First(), zoneName)
 							for k, v := range zone.(map[string]interface{}) {
