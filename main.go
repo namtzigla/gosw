@@ -67,6 +67,46 @@ func find(array []string, value string) bool {
 	return false
 }
 
+func extractVars(conf map[string]interface{}, section string) []string {
+	var ret []string
+	if c, ok := conf[section].(map[string]interface{}); ok {
+		for group, value := range c {
+			if group != "_default" {
+				for k, _ := range value.(map[string]interface{}) {
+					if !find(ret, k) {
+						ret = append(ret, k)
+					}
+				}
+			}
+		}
+	}
+	return ret
+
+}
+
+func generateEraseScript(varNames []string) {
+	for _, k := range varNames {
+		if k != "_command" {
+			fmt.Printf("set -ex %s;\n", k)
+		}
+	}
+}
+
+func generateScript(conf map[string]interface{}, section string, zoneName string) {
+	fmt.Printf("set -gx %s_name \"%s\";\n", section, zoneName)
+	if z, ok := conf[section]; ok {
+		zone := z.(map[string]interface{})
+		for k, v := range zone {
+			if k == "_command" {
+				fmt.Printf("eval (%s);\n", v)
+			} else {
+				fmt.Printf("set -gx %s \"%s\";\n", k, v)
+			}
+		}
+	}
+
+}
+
 func main() {
 	app := cli.NewApp()
 	app.Name = "gosw"
@@ -112,37 +152,18 @@ func main() {
 				config := parse(expandPath(c.GlobalString("config")))
 				if c.Args().Present() {
 					if section, ok := config[c.Args().First()]; ok {
-						var varNames []string
 						// extract var names from configs
-						for key, values := range section.(map[string]interface{}) {
-							if key != "_default" {
-								for k, _ := range values.(map[string]interface{}) {
-									if !find(varNames, k) {
-										varNames = append(varNames, k)
-									}
-								}
-							}
-
-						}
+						varNames := extractVars(config, c.Args().First())
 						var zoneName = c.Args().Get(1)
+						// load default if zoneName is missing
 						if zoneName == "" {
 							s := section.(map[string]interface{})
 							zoneName = s["_default"].(string)
 						}
-						if zone, ok := section.(map[string]interface{})[zoneName]; ok {
-							for _, i := range varNames {
-								if i != "_command" {
-									fmt.Printf("set -ex %s;\n", i)
-								}
-							}
-							fmt.Printf("set -gx %s_name \"%s\";\n", c.Args().First(), zoneName)
-							for k, v := range zone.(map[string]interface{}) {
-								if k == "_command" {
-									fmt.Printf("eval (%s);\n", v)
-								} else {
-									fmt.Printf("set -gx %s \"%s\";\n", k, v)
-								}
-							}
+
+						if _, ok := section.(map[string]interface{})[zoneName]; ok {
+							generateEraseScript(varNames)
+							generateScript(config, c.Args().First(), zoneName)
 
 						} else {
 							fmt.Printf("Can't find %s in %s\n", zoneName, c.Args().First())
@@ -152,6 +173,18 @@ func main() {
 					}
 				} else {
 					fmt.Printf("Arguments: %+v\n", c.Args())
+				}
+				return nil
+			},
+		},
+		{
+			Name:  "defaults",
+			Usage: "Generate the default shell script",
+			Action: func(c *cli.Context) error {
+				config := parse(expandPath(c.GlobalString("config")))
+				for section, c := range config {
+					generateEraseScript(extractVars(config, section))
+					generateScript(config, section, c.(map[string]interface{})["_default"].(string))
 				}
 				return nil
 			},
